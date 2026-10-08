@@ -91,6 +91,25 @@
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) setTimeout(nextWord, HOLD);
   }
 
+  // 앱 사용 장면 영상: 화면에 보일 때만 돌리고, 누르면 멈추거나 다시 돈다
+  var appVideo = document.getElementById("app-video");
+  if (appVideo) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      appVideo.controls = true;   // 움직임을 줄이는 설정에서는 저절로 돌리지 않는다
+    } else {
+      var videoStopped = false;   // 사람이 직접 멈춘 영상은 다시 보여도 저절로 돌리지 않는다
+      new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting && !videoStopped) appVideo.play().catch(function () {});
+        else appVideo.pause();
+      }, { threshold: 0.35 }).observe(appVideo);
+      appVideo.addEventListener("click", function () {
+        videoStopped = !appVideo.paused;
+        if (appVideo.paused) appVideo.play().catch(function () {});
+        else appVideo.pause();
+      });
+    }
+  }
+
   // 모바일 메뉴
   var header = document.getElementById("site-header");
   var toggle = document.getElementById("nav-toggle");

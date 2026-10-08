@@ -276,7 +276,7 @@ h3 { font-weight: 700; }
 }
 .hero-ribbon.is-fallback canvas { display: none; }
 
-.hero-before, .hero-lead, .hero .btn-row { position: relative; z-index: 2; }
+.hero-before, .hero-lead { position: relative; z-index: 2; }
 
 /* 검은 바탕의 첫 화면: 96% 검정(#0A0A0A)과 85% 검정(#262626) 사이의 그라데이션이 바탕에서 옆으로 계속 흘러간다.
    두 색이 선처럼 좁아지지 않게 각각 넓은 면으로 머물고 그 사이만 서서히 바뀐다.
@@ -317,9 +317,6 @@ h3 { font-weight: 700; }
   to { transform: translateX(0); }
 }
 .hero-dark .hero-lead { color: rgba(255, 255, 255, 0.78); }
-.hero-dark .btn { background: #fff; color: var(--ink); }
-.hero-dark .btn:hover { background: #E4E6EB; }
-.hero-dark .btn-teal .icon path { fill: #fff; }   /* 유튜브 아이콘 안의 세모는 버튼 바탕색을 따른다 */
 .hero-dark .hero-before .ch {
   background-image: linear-gradient(90deg, #FF5FA2, #FFA37A, #B08CFF, #FF5FA2);
 }
@@ -370,12 +367,12 @@ h3 { font-weight: 700; }
 .hero-before .ch.is-pre { opacity: 0; transform: translateY(0.2em); filter: blur(6px); transition: none; }
 
 .hero-lead {
-  margin: 28px 0 36px;
+  margin: 28px 0 0;
   font-size: clamp(17px, 1.6vw, 20px);
   font-weight: 500;
+  text-wrap: balance;
   color: var(--ink-2);
 }
-.hero .btn { min-height: 42px; }
 
 /* ---------- 구간 공통 ---------- */
 
@@ -398,9 +395,80 @@ h3 { font-weight: 700; }
   border-left: 3px solid currentColor;
 }
 
+/* ---------- 사진 정리 앱 ---------- */
+
+.app { background: var(--bg); }
+.app-split .app-phone { order: -1; }   /* 넓은 화면에서는 영상이 왼쪽, 좁은 화면에서는 글 아래 */
+
+.app-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.app-name img { width: 44px; height: 44px; border-radius: 11px; }
+.app-name span {
+  font-family: var(--font-title-sans);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.app-name em { font-style: normal; font-size: 15px; font-weight: 600; color: var(--ink-3); }
+
+.app-points { display: grid; gap: 10px; margin-top: 28px; counter-reset: point; }
+.app-points li {
+  counter-increment: point;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 14px;
+  padding: 16px 20px;
+  background: var(--gray-soft);
+  border-radius: 16px;
+}
+.app-points li::before {
+  content: "0" counter(point);
+  grid-row: span 2;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.9;
+  color: var(--magenta);
+}
+.app-points strong { font-size: 17px; line-height: 1.4; }
+.app-points span { font-size: 15px; color: var(--ink-3); line-height: 1.5; }
+
+.app-status {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 9px 18px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--ink);
+  border-radius: 999px;
+}
+
+/* 휴대폰 모양 틀 안에서 사용 장면 영상이 되풀이된다 */
+.app-phone {
+  justify-self: center;
+  width: min(300px, 72vw);
+  padding: 8px;
+  background: #0A0A0A;
+  border-radius: 46px;
+  box-shadow: 0 30px 60px -28px rgba(23, 25, 30, 0.55);
+}
+.app-phone video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 38px;
+  background: #000;
+  cursor: pointer;
+}
+
 /* ---------- 소개 ---------- */
 
-.about { text-align: center; }
+.about { text-align: center; background: var(--gray-soft); }
+.about .label { background: #fff; }
 .statement { font-size: clamp(26px, 3.8vw, 44px); }
 .about-lead {
   max-width: 34em;
@@ -411,7 +479,7 @@ h3 { font-weight: 700; }
 
 .duo {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   text-align: left;
 }
@@ -425,7 +493,7 @@ h3 { font-weight: 700; }
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .duo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-.duo-stay, .duo-things { background: var(--gray-soft); }
+.duo-app, .duo-stay, .duo-things { background: #fff; }
 .duo-kicker { font-size: 15px; font-weight: 700; }
 .duo-stay .duo-kicker, .duo-stay .duo-more { color: var(--magenta); }
 .duo-things .duo-kicker, .duo-things .duo-more { color: var(--teal-dark); }
@@ -568,6 +636,8 @@ h3 { font-weight: 700; }
 
   .section { padding: 80px 0; }
   .split { grid-template-columns: 1fr; gap: 40px; }
+  .app-split .app-phone { order: 0; }
+  .duo { grid-template-columns: 1fr; }
   .split-reverse .split-copy { order: 1; }
   .split-reverse .split-side { order: 2; }
   .gallery-head { margin-top: 56px; }
@@ -600,7 +670,6 @@ h3 { font-weight: 700; }
   .site-header.is-open { background: #fff; }
 
   .btn { min-height: 50px; padding: 0 20px; font-size: 16px; }
-  .hero .btn { min-height: 40px; }
   .duo { grid-template-columns: 1fr; }
   .duo-card { padding: 28px 24px; }
 
